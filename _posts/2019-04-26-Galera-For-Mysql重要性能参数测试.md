@@ -4,7 +4,7 @@ title:      Galera For Mysql性能参数测试 				# 标题
 subtitle:   Sysbench压测    #副标题
 date:       2019-04-26 				# 时间
 author:     BY lingjun						# 作者
-header-img: img/post-bg-coffee.jpg 	#这篇文章标题背景图片
+header-img: img/post-bg-rwd.jpg 	#这篇文章标题背景图片
 catalog: true 						# 是否归档
 tags:								#标签
     - Mysql
