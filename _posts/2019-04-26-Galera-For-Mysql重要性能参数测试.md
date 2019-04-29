@@ -31,7 +31,7 @@ tags:								#标签
 - 客户端连接跟操作单台MySQL数据库的体验一致
 
 通过Galera集群特点，我们可以知道，Galera是基于同步复制的，数据传输到各个节点是通过一个类似队列形式，当从节点处理不过来时，就会发生堵塞，这也就是Galera集群的`限流`。很显然从节点可以开启多个线程来提高处理速度，这就涉及参数`wsrep_slave_threads`.  
-`wsrep_slave_threads`： 本地的执行队列的线程数量，一般为CPU线程数的1-1.5倍
+`wsrep_slave_threads`： 本地的执行队列的线程数量，一般为CPU线程数的1-1.5倍  
 `gcs.fc_limit`:此参数确定Flow Control参与的点。当从队列超过此限制时，节点将暂停复制。默认值为16  
 `gcs.fc_factor`:此参数用于确定节点何时可以脱离流控制。默认值为0.5
 >官方文档提示：注意 警告：不要将wsrep_slave_threads的值用于高于wsrep_cert_deps_distance状态变量给出的平均值。
