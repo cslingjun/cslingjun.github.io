@@ -38,9 +38,17 @@ wsrep_slave_threads： 本地的执行队列的线程数量，一般为CPU线程
 `gcs.fc_factor`:此参数用于确定节点何时可以脱离流控制。默认值为0.5
 
 
-**流控场景**
+**流控场景**  
 导入30W数据到用户表。开启事务。
 在执行过程中，服务性能指标一切正常，在提交`commit`后，触发流控，Galera集群无法对外提供服务
+- 参数配置：wsrep_slave_threads=1  
+![](https://i.loli.net/2019/04/29/5cc6c8f975f51.jpg)
+流控时长65s左右
+- 现修改wsrep_slave_threads=32  
+![](https://i.loli.net/2019/04/29/5cc6cdd8963ac.jpg)
+流控时长65s左右
+- 结论
+开启事务时，wsrep_slave_threads是不影响流控的，对于从节点，就相当于是一个线程，所以从节点2次处理时间基本一致
 
 
 
