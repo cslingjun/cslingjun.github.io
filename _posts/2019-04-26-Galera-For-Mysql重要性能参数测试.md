@@ -36,7 +36,7 @@ tags:								#标签
 `gcs.fc_factor`:此参数用于确定节点何时可以脱离流控制。默认值为0.5
 >官方文档提示：注意 警告：不要将wsrep_slave_threads的值用于高于wsrep_cert_deps_distance状态变量给出的平均值。
 
-**流控场景**  
+**流控场景一：**  
 导入270W+数据到Galera集群
 ![](https://i.loli.net/2019/04/30/5cc7c7999ca93.jpg)
 
@@ -45,13 +45,18 @@ tags:								#标签
 |wsrep_slave_threads|1|
 |wsrep_slave_threads|32|
 
-![](https://i.loli.net/2019/04/30/5cc7c8f8a9d24.jpg)
+![](https://i.loli.net/2019/04/30/5cc7e982139c5.jpg)
 - 结论  
 当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
 
+**流控场景二：**
+开启事务，导入270W+数据到Galera集群
 
-test
-![](https://i.loli.net/2019/04/30/5cc7e982139c5.jpg)
+
+
+
+
+
 
 **Galera常用端口及其作用**
 - 3306-数据库对外服务的端口号。
