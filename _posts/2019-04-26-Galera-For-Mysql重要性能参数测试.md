@@ -37,17 +37,17 @@ tags:								#标签
 >官方文档提示：注意 警告：不要将wsrep_slave_threads的值用于高于wsrep_cert_deps_distance状态变量给出的平均值。
 
 **流控场景**  
-导入30W数据到用户表。开启事务。
-在执行过程中，服务性能指标一切正常，在提交`commit`后，触发流控，Galera集群无法对外提供服务
-- 参数配置：wsrep_slave_threads=1  
-![](https://i.loli.net/2019/04/29/5cc6c8f975f51.jpg)
-流控时长65s左右
-- 现修改wsrep_slave_threads=32  
-![](https://i.loli.net/2019/04/29/5cc6cdd8963ac.jpg)
-流控时长65s左右
-- 结论
-开启事务时，wsrep_slave_threads是不影响流控的，对于从节点，就相当于是一个线程，所以从节点2次处理时间基本一致
+导入270W+数据到Galera集群
+![](https://i.loli.net/2019/04/30/5cc7c48a7a935.jpg)
 
+|参数|值|
+|--|--|
+|wsrep_slave_threads|1|
+|wsrep_slave_threads|32|
+
+![](https://i.loli.net/2019/04/30/5cc7c3ee680e8.jpg)
+- 结论  
+当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
 
 
 
