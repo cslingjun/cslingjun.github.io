@@ -38,7 +38,7 @@ tags:								#标签
 
 **流控场景一：**  
 导入270W+数据到Galera集群
-![](https://i.loli.net/2019/04/30/5cc7c7999ca93.jpg)
+![](https://i.loli.net/2019/04/30/5cc7ed027c302.jpg)
 
 |参数|值|
 |--|--|
