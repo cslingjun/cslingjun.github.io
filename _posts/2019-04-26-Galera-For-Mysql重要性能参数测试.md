@@ -38,16 +38,14 @@ tags:								#标签
 
 **流控场景**  
 导入270W+数据到Galera集群
-
-![](https://i.loli.net/2019/04/30/5cc7c48a7a935.jpg)
+![](https://i.loli.net/2019/04/30/5cc7c7999ca93.jpg)
 
 |参数|值|
 |--|--|
 |wsrep_slave_threads|1|
 |wsrep_slave_threads|32|
 
-![](https://i.loli.net/2019/04/30/5cc7c3ee680e8.jpg)
-
+![](https://i.loli.net/2019/04/30/5cc7c77c33d62.jpg)
 - 结论  
 当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
 
