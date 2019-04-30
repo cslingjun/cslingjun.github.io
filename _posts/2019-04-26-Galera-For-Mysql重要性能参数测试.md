@@ -53,7 +53,7 @@ tags:								#标签
 
 
 
-
+![](https://i.loli.net/2019/04/30/5cc7c8f8a9d24.jpg)
 
 
 **Galera常用端口及其作用**
