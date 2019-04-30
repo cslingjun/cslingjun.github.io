@@ -49,12 +49,9 @@ tags:								#标签
 - 结论  
 当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
 
-![](img/post-bg-rwd.jpg)
 
-
-
-![](https://i.loli.net/2019/04/30/5cc7c8f8a9d24.jpg)
-
+test
+![](https://i.loli.net/2019/04/30/5cc7e982139c5.jpg)
 
 **Galera常用端口及其作用**
 - 3306-数据库对外服务的端口号。
