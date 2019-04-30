@@ -45,12 +45,11 @@ tags:								#标签
 |wsrep_slave_threads|1|
 |wsrep_slave_threads|32|
 
-![](https://i.loli.net/2019/04/30/5cc7c77c33d62.jpg)
+![](https://i.loli.net/2019/04/30/5cc7c8f8a9d24.jpg)
 - 结论  
 当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
 
-
-
+![](img/post-bg-rwd.jpg)
 
 
 
