@@ -37,7 +37,7 @@ tags:								#标签
 >官方文档提示：注意 警告：不要将wsrep_slave_threads的值用于高于wsrep_cert_deps_distance状态变量给出的平均值。
 
 **流控场景一：**  
-导入270W+数据到Galera集群
+开启50线程并发脚本写入数据,手动导入270W+数据到Galera集群
 ![](https://i.loli.net/2019/04/30/5cc7f2384f236.jpg)
 
 |参数|值|
@@ -47,20 +47,101 @@ tags:								#标签
 
 ![](https://i.loli.net/2019/04/30/5cc7e982139c5.jpg)
 - 结论  
-当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控
+当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控，并且在处理时间上有了明显的提升。
 
 **流控场景二：**  
-开启事务，导入270W+数据到Galera集群
+开启50线程并发脚本写入数据,`开启事务`，手动导入270W+数据到Galera集群
 
 
 
 
 
 
+
+
+### 附录
 
 **Galera常用端口及其作用**
 - 3306-数据库对外服务的端口号。
 - 4444-请求SST的端口（SST是指数据库一个备份全量文件的传输。）
 - 4567-组成员之间进行沟通的一个端口号
 - 4568-用于传输IST（相对于SST来说的一个增量）
+
+**python并发脚本**
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Date: 2018/11/30/030
+# Created by 灵均
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+import time
+import threading
+from time import ctime
+import pymysql
+
+row_count=10000000 #共计插入数据令
+threads_count = 50 #并发线程数
+
+def time_me(fn):
+    '''
+        记录方法执行时间
+        :param args:
+        :param kwargs:
+        :return:
+        '''
+    def _wrapper(*args, **kwargs):
+        start = time.time()
+        fn(*args, **kwargs)
+        seconds = time.time() - start
+        print("{func}函数每{count}条数数据写入耗时{sec}秒".format(func='ordinary_insert', count=args[0], sec=seconds))
+    return _wrapper
+
+@time_me
+def ordinary_insert(count):
+    db= pymysql.connect(host='host',
+                        user='user',
+                        passwd='passwd',
+                        port=3306,
+                        db='db',
+                        charset="utf8")
+    cur = db.cursor()
+    for i in range(count):
+        #具体sql
+        sql = '''INSERT INTO `test`( `a`) VALUES ( '3')'''.format(i)
+        cur.execute(sql)
+        db.commit() #每次都提交
+    db.close() #关闭连接
+
+
+local_var=threading.local()
+def Clean(args):
+    local_var.name =args
+    ordinary_insert(int(row_count/threads_count))
+
+
+
+threads=[]
+for i in range(threads_count):
+    t = threading.Thread(target=Clean, args=(i,))
+    threads.append(t)
+
+
+print ('start:', ctime())
+start = time.time()
+
+if __name__ == '__main__':
+    for i in threads:
+        i.start()
+    for i in threads:
+        i.join()
+seconds = time.time() - start
+print ('end:', ctime())
+print("{func}函数每{count}条数数据写入耗时{sec}秒".format(func='ordinary_insert', count=row_count, sec=seconds))
+```
+
+
+
 
