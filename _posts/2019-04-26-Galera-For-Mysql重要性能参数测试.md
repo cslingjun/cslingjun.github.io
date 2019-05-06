@@ -37,19 +37,46 @@ tags:								#标签
 >官方文档提示：注意 警告：不要将wsrep_slave_threads的值用于高于wsrep_cert_deps_distance状态变量给出的平均值。
 
 #### 流控场景一
-开启50线程并发脚本写入数据,手动导入270W+数据到Galera集群
+wsrep_slave_threads参数设置为`1`,开启50个线程并发脚本写入数据,然后再手动导入`270W+`数据到Galera集群
+
+- 步骤一：执行python脚本,开启50线程往`test_limit`表写入数据,可以看到写入速度很快,如下图
+![](https://i.loli.net/2019/05/06/5ccfd9307cf34.jpg)
+执行一段时间后,观察指标,如下图
+![](https://i.loli.net/2019/05/06/5ccfdc4559532.jpg)
+平缓写入数据，所有节点基本上都能处理过来，没有触发流控
+
+- 步骤二：load数据270W+,如下图
 ![](https://i.loli.net/2019/04/30/5cc7f2384f236.jpg)
+此时再看执行速度,如下图所示，执行速度慢了很多，但是还是能处理完成
+![](https://i.loli.net/2019/05/06/5ccfddc25f537.jpg)
+再观察性能指标，如下图
+![](https://i.loli.net/2019/05/06/5ccfde5a8e5fc.jpg)
+可以看出触发了流控,但是没有完全堵塞,还是能持续写入数据，只是影响了部分性能
 
-|参数|值|
-|--|--|
-|wsrep_slave_threads|1|
-|wsrep_slave_threads|32|
+- 步骤三：load结束,如下图
+观察性能指标,如下图
+![](https://i.loli.net/2019/05/06/5ccfe0bc0d0cd.jpg)
+此时再查看执行速度，如下图，此时写入速度恢复
+![](https://i.loli.net/2019/05/06/5ccfe11de6dd3.jpg)
 
-![](https://i.loli.net/2019/04/30/5cc7e982139c5.jpg)
-- 结论  
-当调大wsrep_slave_threads参数值为32时，在第二次Load数据时，没有触发流控，并且在处理时间上有了明显的提升。
 
-#### 流控场景二 
+**结论**
+流控起始时间:15:08:47
+流控结束时间:15:20:17
+流控持续时长:12分钟
+整个过程虽然触发了流控，但是没有完全堵塞，影响了写的性能，读的性能没有受影响
+整个测试阶段服务器性能都在正常范围内
+
+
+#### 流控场景二
+wsrep_slave_threads参数设置为`32`,开启50个线程并发脚本写入数据,然后再手动导入`270W+`数据到Galera集群
+
+
+
+
+
+
+#### 流控场景三 
 开启50线程并发脚本写入数据,`开启事务`，手动导入270W+数据到Galera集群
 
 
@@ -112,7 +139,7 @@ def ordinary_insert(count):
     cur = db.cursor()
     for i in range(count):
         #具体sql
-        sql = '''INSERT INTO `test`( `a`) VALUES ( '3')'''.format(i)
+        sql = '''INSERT INTO `test_limit`( `tno`) select round(rand()*10000000)'''.format(i)
         cur.execute(sql)
         db.commit() #每次都提交
     db.close() #关闭连接
