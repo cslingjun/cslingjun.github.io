@@ -5,7 +5,7 @@ header-img: img/post-bg-swift.jpg
 email: nba169@163.com
 description: "Every failure is leading towards success."
 keyword: "BY, BY Blog, 灵均的博客, MHA, 灵均, Mysql, Python, Percona, Ansible, PXC"
-url: "http://cslingjun.github.io"          # your host, for absolute URL
+url: "http://www.cslingjun.com"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/cslingjun/cslingjun.github.io.git" # you code repository
 
