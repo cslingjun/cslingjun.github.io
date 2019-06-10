@@ -1,6 +1,6 @@
 ---
 layout:     post   				    # 使用的布局（不需要改）
-title:      Galera For Mysql性能参数测试 				# 标题 
+title:      Galera For MySQL性能参数测试 				# 标题 
 subtitle:   Sysbench压测    #副标题
 date:       2019-04-26 				# 时间
 author:     BY lingjun						# 作者
@@ -12,7 +12,7 @@ tags:								#标签
     - Sysbench
 ---
 
-## Galera For Mysql性能参数测试
+## Galera For MySQL性能参数测试
 
 >Galera Cluster for MySQL是一套基于同步复制的多主MySQL集群解决方案，使用简单，没有单点故障，可用性高，能很好保证业务不断增长时数据的安全和随时的扩展。
 
