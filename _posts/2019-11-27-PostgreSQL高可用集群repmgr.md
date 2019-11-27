@@ -1,7 +1,7 @@
 ---
 layout:     post   				    # 使用的布局（不需要改）
-title:      PostgreSQL高可用集群repmgr 				# 标题 
-subtitle:   postgres|repmgr    #副标题
+title:      PostgreSQL高可用集群 				# 标题 
+subtitle:   repmgr    #副标题
 date:       2019-11-27 				# 时间
 author:     BY lingjun						# 作者
 header-img: img/post-bg-miui6.jpg 	#这篇文章标题背景图片
