@@ -4,7 +4,7 @@ title:      PostgreSQL高可用集群 				# 标题
 subtitle:   repmgr    #副标题
 date:       2019-11-27 				# 时间
 author:     BY lingjun						# 作者
-header-img: img/post-bg-miui6.jpg 	#这篇文章标题背景图片
+header-img: img/post-bg-keybord.jpg 	#这篇文章标题背景图片
 catalog: true 						# 是否归档
 tags:								#标签
     - postgres
