@@ -70,6 +70,37 @@ Repmgr 4.2
 
 
 #### repmgr高可用测试
+1. 使用repmgr执行switch over切换
+- `repmgr standby switchover -f /etc/repmgr.conf --siblings-follow`
+![](https://i.loli.net/2019/11/27/er2jHGkoapqZIu6.jpg)
+
+2. 使用repmgr执行fail over切换
+- 手动关闭主库模拟数据库异常：`pg_ctl -D /var/lib/pgsql/11/data stop`
+- 从备库查看主备库状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/SJQEumvyqBjkc4H.jpg)
+- 备库强制提升为主库：`repmgr -f /etc/repmgr.conf standby promote`
+- 新主库查看主备库状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/MfVsUDPpwT1mtdB.jpg)
+- 启动原主库：`pg_ctl -D /var/lib/pgsql/11/data start`
+- 原主库查看主备库状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/8aEDchq9IliSLet.jpg)
+- 新主库查看主备状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/vw2jIKspG6DOMoA.jpg)
+- 可以看到从主备库查看的状态都带有警告，这时如果要把剔除掉的原主库作为备库状态重新加入，需要repmgr node rejoin操作
+- 首先关闭原主库：`pg_ctl -D /var/lib/pgsql/11/data stop`
+- 执行repmgr node rejoin重新添加原主库命令：`repmgr -f /etc/repmgr.conf node rejoin -d 'host=192.168.111.133 user=repmgr dbname=repmgr connect_timeout=2' --force-rewind --verbose` 
+![](https://i.loli.net/2019/11/27/vtCBH9JRezyuGdk.jpg)
+- 主库查看主备状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/xuy3fIwAQdlGWtR.jpg)
+
+3. 一主一备利用repmgrd实现自动fail over
+- 启动主备库的repmgrd：`repmgrd -f /etc/repmgr.conf --pid-file /var/lib/pgsql/11/data/repmgrd.pid`
+![](https://i.loli.net/2019/11/27/EUFZ1yrtvOQPhAu.jpg)
+- 手动关闭主库模拟异常：`pg_ctl -D /var/lib/pgsql/11/data stop`
+![](https://i.loli.net/2019/11/27/1T8fIMYQv5hKUn2.jpg)
+- 备库查看主备状态：`repmgr -f /etc/repmgr.conf cluster show`
+![](https://i.loli.net/2019/11/27/fytJHA5usGbaYIo.jpg)
+- 自动failover切换成功
 
 
 #### 备注
